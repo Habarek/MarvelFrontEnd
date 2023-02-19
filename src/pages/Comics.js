@@ -4,6 +4,7 @@ import axios from "axios";
 const Comics = () => {
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const fechData = async () => {
@@ -12,7 +13,9 @@ const Comics = () => {
         // dans mon back j'ai app.listen(4000, () => {console.log("Server started🚀");});)
         //
         //
-        const response = await axios.get("http://localhost:4000/comics");
+        const response = await axios.get(
+          `http://localhost:4000/comics?title=${search}`
+        );
         console.log(response.data);
         setData(response.data);
         setIsLoading(false);
@@ -21,27 +24,33 @@ const Comics = () => {
       }
     };
     fechData();
-  }, []);
+  }, [search]);
 
   return isLoading ? (
     <p>Loading...</p>
   ) : (
     <div>
-      {/* <h1>Les Comics</h1> */}
+      <input
+        type="text"
+        placeholder="Rechercher des articles ..."
+        onChange={(event) => {
+          setSearch(event.target.value);
+        }}
+      />
+
       {data.results.map((comics) => {
         return (
           <div key={comics._id} className="comics">
-            <div className="popo">
-              <div>{comics.title}</div>
-              <img
-                src={comics.thumbnail.path + "." + comics.thumbnail.extension}
-                alt=""
-              />
+            <div className="title">
+              <h2>{comics.title}</h2>
             </div>
 
-            <div className="description">
-              <div>{comics.description}</div>
-            </div>
+            <img
+              src={comics.thumbnail.path + "." + comics.thumbnail.extension}
+              alt=""
+            />
+
+            <p>{comics.description}</p>
           </div>
         );
       })}

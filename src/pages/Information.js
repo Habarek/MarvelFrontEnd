@@ -1,47 +1,40 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-const Characters = () => {
+const Information = () => {
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const [search, setSearch] = useState("");
 
+  const { id } = useParams();
+  console.log(id);
+
+  //   console.log(params);
   useEffect(() => {
-    const fechData = async () => {
+    const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:4000/characters?name=${search}`
+          `http://localhost:4000/characters?id=${id}`
         );
-        console.log(response.data);
-
         setData(response.data);
+
         setIsLoading(false);
+        console.log(response.data);
       } catch (error) {
-        console.log(error.data);
+        console.log(error.message);
       }
     };
-    console.log(data);
-    fechData();
-  }, [search]);
+    fetchData();
+  }, [id]);
+
   return isLoading ? (
-    <p>Is Loading</p>
+    <p>Loading ...</p>
   ) : (
-    <div>
-      <input
-        type="text"
-        placeholder="Rechercher des articles ..."
-        onChange={(event) => {
-          setSearch(event.target.value);
-        }}
-      />
+    <div classeName="information">
+      <h1>INFORMATIONS</h1>
       {data.results.map((characters) => {
         return (
-          <Link
-            key={characters._id}
-            className="characters"
-            to={`/information/${characters._id}`}
-          >
+          <div key={characters._id}>
             <h2>{characters.name}</h2>
             <img
               src={
@@ -49,11 +42,12 @@ const Characters = () => {
               }
               alt=""
             />
+
             <p>{characters.description}</p>
-          </Link>
+          </div>
         );
       })}
     </div>
   );
 };
-export default Characters;
+export default Information;

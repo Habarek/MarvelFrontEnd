@@ -3,22 +3,18 @@ import { Link } from "react-router-dom";
 const Home = () => {
   return (
     <div className="container">
-      <h1>Personnages</h1>
+      <p>Personnages</p>
       <Link to="/characters">
-        <div>LES PERSONNAGES</div>
+        <div className="perso"></div>
       </Link>
-      <p>Découvre tout tes personnages préféré de l'univer Marvel</p>
-
+      <p>Comics</p>
       <Link to="/comics">
-        <div>COMICS</div>
+        <div className="BD"></div>
       </Link>
-      <p>Découvre tout les Comics</p>
-
+      <p>Favories</p>
       <Link to="/favorites">
-        <div>FAVORIS</div>
+        <div className="Fav"></div>
       </Link>
-
-      <p>Enregistre tout tes favoris dans ton espace privée</p>
     </div>
   );
 };
